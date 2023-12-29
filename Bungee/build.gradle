@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        maven { url uri("https://plugins.gradle.org/m2/") }
+    }
+    dependencies {
+        classpath 'com.github.johnrengelman:shadow:8.1.1'
+    }
+}
+
+plugins{
+    id "java"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "java-library"
+    id "maven-publish"
+}
+
+dependencies {
+    compileOnly "net.md-5:bungeecord-proxy:1.4.7-SNAPSHOT"
+    compileOnly "net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT"
+    compileOnly 'io.netty:netty-all:4.1.86.Final'
+
+    implementation project(path: ':Base')
+    implementation project(path: ':TCP')
+}
+
+publishing {
+    publications {
+        packetLibBungee(MavenPublication) {
+            groupId = group
+            artifactId = rootProject.name + "-" + project.name
+            version = version
+            from components.java
+        }
+    }
+}

@@ -1,0 +1,54 @@
+plugins {
+    id "java"
+    id "maven-publish"
+}
+
+allprojects {
+    group = 'dev.mhpro.packetlib'
+    version = '1.0-SNAPSHOT'
+
+    afterEvaluate {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        repositories {
+            mavenCentral()
+            maven { url "https://jitpack.io" }
+            maven { url "https://oss.sonatype.org/content/groups/public/" }
+            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven { url "https://repo.papermc.io/repository/maven-public/" }
+            maven { url "https://repo.opencollab.dev/maven-releases/" }
+        }
+
+        dependencies {
+            compileOnly 'org.projectlombok:lombok:1.18.26'
+            annotationProcessor 'org.projectlombok:lombok:1.18.26'
+            testCompileOnly 'org.projectlombok:lombok:1.18.26'
+            testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+            compileOnly 'org.jetbrains:annotations:24.0.1'
+            annotationProcessor 'org.jetbrains:annotations:24.0.1'
+            testCompileOnly 'org.jetbrains:annotations:24.0.1'
+            testAnnotationProcessor 'org.jetbrains:annotations:24.0.1'
+        }
+
+        publishing {
+            repositories {
+                mavenLocal()
+                maven {
+                    url = "sftp://maven.paradise-city.fun:22/var/www/html/maven/"
+                    credentials {
+                        username System.getenv('USERNAME') == null ? "root" : System.getenv('USERNAME')
+                        password System.getenv('PASSWORD') == null ? "" : System.getenv('PASSWORD')
+                    }
+                }
+            }
+        }
+
+    }
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = 'UTF-8'
+        }
+    }
+}

@@ -1,0 +1,9 @@
+rootProject.name = 'PacketLib'
+
+include 'Bungee'
+include 'Spigot'
+include 'Client'
+include 'Server'
+include 'Base'
+include 'TCP'
+
